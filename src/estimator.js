@@ -24,24 +24,38 @@ const infectionsByRequestedTime = (elapsedTime, currentlyInfected) => {
 };
 
 const covid19ImpactEstimator = (data) => {
-    const impactReportedCases = data.reportedCases * 10;
-    const severeImpactReportedCases = data.reportedCases * 50;
-    const impactInfectionsByRequestedTime = infectionsByRequestedTime(data.timeToElapse, impactReportedCases);
-    const severeImpactInfectionsByRequestedTime = infectionsByRequestedTime(data.timeToElapse, severeImpactReportedCases);
-    const availableBeds = 0.35 * data.totalHospitalBeds;
+    const impactReportedCases = data.reportedCases * 10,
+    severeImpactReportedCases = data.reportedCases * 50,
+    impactInfectionsByRequestedTime = infectionsByRequestedTime(data.timeToElapse, impactReportedCases),
+    severeImpactInfectionsByRequestedTime = infectionsByRequestedTime(data.timeToElapse, severeImpactReportedCases),
+    impactSevereCasesByRequestedTime = Math.round(0.15 * impactInfectionsByRequestedTime),
+    severeImpactSevereCasesByRequestedTime = Math.round(0.15 * severeImpactInfectionsByRequestedTime),
+    availableBeds = Math.round(0.35 * data.totalHospitalBeds),
+    impactHospitalBedsByRequestedTime =  availableBeds - (Math.round(0.15 * impactInfectionsByRequestedTime)),
+    severeImpactHospitalBedsByRequestedTime = availableBeds - (Math.round(0.15 * severeImpactInfectionsByRequestedTime)),
+    impactCasesForICUByRequestedTime = Math.round(0.05 * impactInfectionsByRequestedTime),
+    severImpactCasesForICUByRequestedTime = Math.round(0.05 * severeImpactInfectionsByRequestedTime),
+    impactDollarsInFlight = impactInfectionsByRequestedTime * data.region.avgDailyIncomePopulation * data.timeToElapse,
+    severImpactDollarsInFlight = severeImpactInfectionsByRequestedTime * data.region.avgDailyIncomePopulation * data.timeToElapse;
     return {
         data: data,
         impact: {
             currentlyInfected: impactReportedCases,
             infectionsByRequestedTime: impactInfectionsByRequestedTime,
-            severeCasesByRequestedTime: Math.round(0.15 * impactInfectionsByRequestedTime),
-            hospitalBedsByRequestedTime: availableBeds - (Math.round(0.15 * impactInfectionsByRequestedTime))
+            severeCasesByRequestedTime: impactSevereCasesByRequestedTime,
+            hospitalBedsByRequestedTime: impactHospitalBedsByRequestedTime,
+            casesForICUByRequestedTime: impactCasesForICUByRequestedTime,
+            casesForVentilatorsByRequestedTime: Math.round(0.02 * impactInfectionsByRequestedTime),
+            dollarsInFlight: impactDollarsInFlight
         },
         severeImpact: {
             currentlyInfected: severeImpactReportedCases,
             infectionsByRequestedTime: severeImpactInfectionsByRequestedTime,
-            severeCasesByRequestedTime: Math.round(0.15 * severeImpactInfectionsByRequestedTime),
-            hospitalBedsByRequestedTime: availableBeds - (Math.round(0.15 * severeImpactInfectionsByRequestedTime))
+            severeCasesByRequestedTime: severeImpactSevereCasesByRequestedTime,
+            hospitalBedsByRequestedTime: severeImpactHospitalBedsByRequestedTime,
+            casesForICUByRequestedTime: severImpactCasesForICUByRequestedTime,
+            casesForVentilatorsByRequestedTime: Math.round(0.02 * severeImpactInfectionsByRequestedTime),
+            dollarsInFlight: severImpactDollarsInFlight
         }
     };
 };
