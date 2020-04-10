@@ -12,36 +12,7 @@ const inDays = (periodType, timeToElapse) => {
   } else if (periodType === 'weeks') {
     result = 7 * timeToElapse;
   } else if (periodType === 'months') {
-    let then;
-    const now = new Date();
-    const nowMonth = now.getMonth();
-    let nowDate = now.getDate();
-    const nowYr = now.getFullYear();
-    const nowHr = now.getHours();
-    const nowMins = now.getMinutes();
-    const nowSecs = now.getSeconds();
-    const nowMilSecs = now.getMilliseconds();
-    const totalMonths = nowMonth + timeToElapse;
-    const workingMonth = totalMonths + 1;
-    const months30s = [4, 6, 9, 11];
-    if (workingMonth > 12) {
-      const addedYrs = Math.floor(workingMonth / 12);
-      const fYr = nowYr + addedYrs;
-      const fMonths = workingMonth % 12;
-      if (fYr % 4 !== 0 && fMonths === 2 && nowDate > 28) {
-        nowDate = 28;
-      }
-      if (months30s.indexOf(fMonths) > -1 && nowDate === 31) {
-        nowDate = 30;
-      }
-      then = new Date(fYr, fMonths, nowDate, nowHr, nowMins, nowSecs, nowMilSecs);
-    } else {
-      const fYr = nowYr;
-      const fMonths = nowMonth + timeToElapse;
-      then = new Date(fYr, fMonths, nowDate, nowHr, nowMins, nowSecs, nowMilSecs);
-    }
-    const timeDifferenceInMilliseconds = then.getTime() - now.getTime();
-    result = Math.floor(timeDifferenceInMilliseconds / 86400000);
+    result = 30 * timeToElapse;
   }
   return result;
 };
