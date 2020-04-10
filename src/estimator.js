@@ -7,12 +7,11 @@ const infByReqTime = (elapsedTime, cInf) => {
 };
 const inDays = (periodType, timeToElapse) => {
   let result = timeToElapse;
-  const options = ['days', 'weeks', 'months'];
-  if (options.indexOf(periodType) === 1) {
+  if (periodType === 'weeks') {
     result = timeToElapse * 7;
   }
   let then;
-  if (options.indexOf(periodType) === 2) {
+  if (periodType === 'months') {
     const now = new Date();
     const nowMonth = now.getMonth();
     let nowDate = now.getDate();
