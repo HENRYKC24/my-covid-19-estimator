@@ -3,7 +3,7 @@ const infByReqTime = (elapsedTime, cInf) => {
   const extraDays = elapsedTime % 3;
   const part1CurrentlyInfected = cInf * (2 ** numOfThreesInElapsedTime);
   const part2CurrentlyInfected = (part1CurrentlyInfected / 72) * extraDays;
-  return Math.round(part1CurrentlyInfected + part2CurrentlyInfected);
+  return Math.floor(part1CurrentlyInfected + part2CurrentlyInfected);
 };
 const inDays = (periodType, timeToElapse) => {
   let result = timeToElapse;
@@ -22,19 +22,19 @@ const covid19ImpactEstimator = (data) => {
   const normalTTE = inDays(data.periodType, data.timeToElapse);
   const impactInfByRT = infByReqTime(normalTTE, impactRC);
   const sImpactInfByRT = infByReqTime(normalTTE, sImpactRC);
-  const impactSCByRT = Math.round(0.15 * impactInfByRT);
-  const sImpactSCByRT = Math.round(0.15 * sImpactInfByRT);
-  const availableBeds = Math.round(0.35 * data.totalHospitalBeds);
-  const impactHBByRT = availableBeds - (Math.round(0.15 * impactInfByRT));
-  const sImpactHBByRT = availableBeds - (Math.round(0.15 * sImpactInfByRT));
-  const impactCForICUByRT = Math.round(0.05 * impactInfByRT);
-  const sImpactCForICUByRT = Math.round(0.05 * sImpactInfByRT);
+  const impactSCByRT = Math.floor(0.15 * impactInfByRT);
+  const sImpactSCByRT = Math.floor(0.15 * sImpactInfByRT);
+  const availableBeds = Math.floor(0.35 * data.totalHospitalBeds);
+  const impactHBByRT = availableBeds - (Math.floor(0.15 * impactInfByRT));
+  const sImpactHBByRT = availableBeds - (Math.floor(0.15 * sImpactInfByRT));
+  const impactCForICUByRT = Math.floor(0.05 * impactInfByRT);
+  const sImpactCForICUByRT = Math.floor(0.05 * sImpactInfByRT);
   const myltp = impactInfByRT * data.region.avgDailyIncomePopulation;
   const impactDInF = Math.floor(myltp * data.timeToElapse);
   const multp2 = sImpactInfByRT * data.region.avgDailyIncomePopulation;
   const sImpactDInF = Math.floor(multp2 * data.timeToElapse);
-  const impactVent = Math.round(0.02 * impactInfByRT);
-  const sImpactVent = Math.round(0.02 * sImpactInfByRT);
+  const impactVent = Math.floor(0.02 * impactInfByRT);
+  const sImpactVent = Math.floor(0.02 * sImpactInfByRT);
   return {
     data,
     impact: {
