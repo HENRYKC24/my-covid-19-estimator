@@ -65,7 +65,7 @@ const covid19ImpactEstimator = (data) => {
   const impactVent = Math.round(0.02 * impactInfByRT);
   const sImpactVent = Math.round(0.02 * sImpactInfByRT);
   return {
-    data: data,
+    data,
     impact: {
       currentlyInfected: impactRC,
       infectionsByRequestedTime: impactInfByRT,
