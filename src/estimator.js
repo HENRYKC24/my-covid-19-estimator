@@ -1,16 +1,4 @@
-data = {
-    region: {
-        name: "Africa",
-        avgAge: 19.7,
-        avgDailyIncomeInUSD: 5,
-        avgDailyIncomePopulation: 0.71
-    },
-    periodType: "days",
-    timeToElapse: 58,
-    reportedCases: 674,
-    population: 66622705,
-    totalHospitalBeds: 1380614
-};
+
 /* a function that handles all vallues to determine how the infected 
 ** persons doubles overtime
 */
@@ -75,6 +63,7 @@ const normaliseIndays = (periodType, timeToElapse) => {
 const covid19ImpactEstimator = (data) => {
     const impactReportedCases = data.reportedCases * 10,
     severeImpactReportedCases = data.reportedCases * 50,
+    normalisedTimeToElapse = normaliseIndays(data.periodType, data.timeToElapse)
     impactInfectionsByRequestedTime = infectionsByRequestedTime(normaliseIndays(data.periodType, data.timeToElapse), impactReportedCases),
     severeImpactInfectionsByRequestedTime = infectionsByRequestedTime(normaliseIndays(data.periodType, data.timeToElapse), severeImpactReportedCases),
     impactSevereCasesByRequestedTime = Math.round(0.15 * impactInfectionsByRequestedTime),
@@ -84,8 +73,8 @@ const covid19ImpactEstimator = (data) => {
     severeImpactHospitalBedsByRequestedTime = availableBeds - (Math.round(0.15 * severeImpactInfectionsByRequestedTime)),
     impactCasesForICUByRequestedTime = Math.round(0.05 * impactInfectionsByRequestedTime),
     severImpactCasesForICUByRequestedTime = Math.round(0.05 * severeImpactInfectionsByRequestedTime),
-    impactDollarsInFlight = impactInfectionsByRequestedTime * data.region.avgDailyIncomePopulation * data.timeToElapse,
-    severImpactDollarsInFlight = severeImpactInfectionsByRequestedTime * data.region.avgDailyIncomePopulation * data.timeToElapse;
+    impactDollarsInFlight = Math.floor(impactInfectionsByRequestedTime * data.region.avgDailyIncomePopulation * data.timeToElapse),
+    severImpactDollarsInFlight = Math.floor(severeImpactInfectionsByRequestedTime * data.region.avgDailyIncomePopulation * data.timeToElapse);
     return {
         data: data,
         impact: {
