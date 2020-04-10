@@ -14,9 +14,9 @@ const normaliseIndays = (periodType, timeToElapse) => {
     let then;
     if (options.indexOf(periodType) === 2) {
         const now = new Date();
-        const nowMonth = now.getMonth();
-        const nowDate = now.getDate();
-        const nowYear = now.getFullYear();
+        let nowMonth = now.getMonth();
+        let nowDate = now.getDate();
+        let nowYear = now.getFullYear();
         const nowHour = now.getHours();
         const nowMinutes = now.getMinutes();
         const nowSeconds = now.getSeconds();
@@ -28,18 +28,18 @@ const normaliseIndays = (periodType, timeToElapse) => {
             const addedYears = Math.floor(workingMonth / 12);
             const futureYear = nowYear + addedYears;
             const futureMonths = workingMonth % 12;
-            if (futureYear % 4 !== 0 && futureMonths == 2 && nowDate > 28) {
+            if (futureYear % 4 !== 0 && futureMonths === 2 && nowDate > 28) {
                 nowDate = 28;
             };
-            if (months30s.indexOf(futureMonths) > -1 && nowDate == 31) {
+            if (months30s.indexOf(futureMonths) > -1 && nowDate === 31) {
                 nowDate = 30;
             };
             then = new Date(futureYear, futureMonths, nowDate, nowHour, nowMinutes, nowSeconds, nowmilliseconds);
         } else {
             const futureYear = nowYear;
-            futureMonths = nowMonth + timeToElapse;
+            const futureMonths = nowMonth + timeToElapse;
             then = new Date(futureYear, futureMonths, nowDate, nowHour, nowMinutes, nowSeconds, nowmilliseconds);
-        };
+        }
         const timeDifferenceInMilliseconds = then.getTime() - now.getTime();
         result = Math.ceil(timeDifferenceInMilliseconds / 86400000);
     };
@@ -50,17 +50,27 @@ const covid19ImpactEstimator = (data) => {
     const impactReportedCases = data.reportedCases * 10;
     const severeImpactReportedCases = data.reportedCases * 50;
     const normalisedTimeToElapse = normaliseIndays(data.periodType, data.timeToElapse);
-    const impactInfectionsByRequestedTime = infectionsByRequestedTime(normalisedTimeToElapse, impactReportedCases);
-    const severeImpactInfectionsByRequestedTime = infectionsByRequestedTime(normalisedTimeToElapse, severeImpactReportedCases);
+    const impactInfectionsByRequestedTime =
+     infectionsByRequestedTime(normalisedTimeToElapse, impactReportedCases);
+    const severeImpactInfectionsByRequestedTime =
+     infectionsByRequestedTime(normalisedTimeToElapse, severeImpactReportedCases);
     const impactSevereCasesByRequestedTime = Math.round(0.15 * impactInfectionsByRequestedTime);
-    const severeImpactSevereCasesByRequestedTime = Math.round(0.15 * severeImpactInfectionsByRequestedTime);
+    const severeImpactSevereCasesByRequestedTime =
+     Math.round(0.15 * severeImpactInfectionsByRequestedTime);
     const availableBeds = Math.round(0.35 * data.totalHospitalBeds);
-    const impactHospitalBedsByRequestedTime =  availableBeds - (Math.round(0.15 * impactInfectionsByRequestedTime));
-    const severeImpactHospitalBedsByRequestedTime = availableBeds - (Math.round(0.15 * severeImpactInfectionsByRequestedTime));
+    const impactHospitalBedsByRequestedTime =  availableBeds -
+     (Math.round(0.15 * impactInfectionsByRequestedTime));
+    const severeImpactHospitalBedsByRequestedTime = availableBeds -
+     (Math.round(0.15 * severeImpactInfectionsByRequestedTime));
     const impactCasesForICUByRequestedTime = Math.round(0.05 * impactInfectionsByRequestedTime);
-    const severImpactCasesForICUByRequestedTime = Math.round(0.05 * severeImpactInfectionsByRequestedTime);
-    const impactDollarsInFlight = Math.floor(impactInfectionsByRequestedTime * data.region.avgDailyIncomePopulation * data.timeToElapse);
-    const severImpactDollarsInFlight = Math.floor(severeImpactInfectionsByRequestedTime * data.region.avgDailyIncomePopulation * data.timeToElapse);
+    const severImpactCasesForICUByRequestedTime =
+     Math.round(0.05 * severeImpactInfectionsByRequestedTime);
+    const impactDollarsInFlight = Math.floor(impactInfectionsByRequestedTime *
+         data.region.avgDailyIncomePopulation * data.timeToElapse);
+    const severImpactDollarsInFlight = Math.floor(severeImpactInfectionsByRequestedTime *
+         data.region.avgDailyIncomePopulation * data.timeToElapse);
+    const impactVentilators = Math.round(0.02 * impactInfectionsByRequestedTime);
+    const severeImpactVentilators = Math.round(0.02 * severeImpactInfectionsByRequestedTime);
     return {
         data: data,
         impact: {
@@ -69,7 +79,7 @@ const covid19ImpactEstimator = (data) => {
             severeCasesByRequestedTime: impactSevereCasesByRequestedTime,
             hospitalBedsByRequestedTime: impactHospitalBedsByRequestedTime,
             casesForICUByRequestedTime: impactCasesForICUByRequestedTime,
-            casesForVentilatorsByRequestedTime: Math.round(0.02 * impactInfectionsByRequestedTime),
+            casesForVentilatorsByRequestedTime: impactVentilators,
             dollarsInFlight: impactDollarsInFlight
         },
         severeImpact: {
@@ -78,7 +88,7 @@ const covid19ImpactEstimator = (data) => {
             severeCasesByRequestedTime: severeImpactSevereCasesByRequestedTime,
             hospitalBedsByRequestedTime: severeImpactHospitalBedsByRequestedTime,
             casesForICUByRequestedTime: severImpactCasesForICUByRequestedTime,
-            casesForVentilatorsByRequestedTime: Math.round(0.02 * severeImpactInfectionsByRequestedTime),
+            casesForVentilatorsByRequestedTime: severeImpactVentilators,
             dollarsInFlight: severImpactDollarsInFlight
         }
     }
