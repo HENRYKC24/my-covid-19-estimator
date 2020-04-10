@@ -1,9 +1,6 @@
 const infByReqTime = (elapsedTime, cInf) => {
   const exponent = Math.floor(elapsedTime / 3);
-  const extraDays = elapsedTime % 3;
-  const part1CurrentlyInfected = cInf * (2 ** exponent);
-  const part2CurrentlyInfected = ((part1CurrentlyInfected * 2) / 3) * extraDays;
-  return (part1CurrentlyInfected + part2CurrentlyInfected);
+  return cInf * (2 ** exponent);
 };
 const inDays = (periodType, timeToElapse) => {
   let result = timeToElapse;
@@ -22,8 +19,8 @@ const covid19ImpactEstimator = (data) => {
   const normalTTE = Math.floor(inDays(data.periodType, data.timeToElapse));
   const impactInfByRT = Math.floor(infByReqTime(normalTTE, impactRC));
   const sImpactInfByRT = Math.floor(infByReqTime(normalTTE, sImpactRC));
-  const impactSCByRT = Math.ceil(0.15 * impactInfByRT);
-  const sImpactSCByRT = Math.ceil(0.15 * sImpactInfByRT);
+  const impactSCByRT = Math.floor(0.15 * impactInfByRT);
+  const sImpactSCByRT = Math.floor(0.15 * sImpactInfByRT);
   const availableBeds = Math.floor(0.35 * data.totalHospitalBeds);
   const impactHBByRT = availableBeds - (Math.floor(0.15 * impactInfByRT));
   const sImpactHBByRT = availableBeds - (Math.floor(0.15 * sImpactInfByRT));
