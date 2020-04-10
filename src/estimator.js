@@ -41,7 +41,7 @@ const inDays = (periodType, timeToElapse) => {
       then = new Date(fYr, fMonths, nowDate, nowHr, nowMins, nowSecs, nowMilSecs);
     }
     const timeDifferenceInMilliseconds = then.getTime() - now.getTime();
-    result = Math.ceil(timeDifferenceInMilliseconds / 86400000);
+    result = Math.floor(timeDifferenceInMilliseconds / 86400000);
   }
   return result;
 };
