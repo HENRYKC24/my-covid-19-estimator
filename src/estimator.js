@@ -27,8 +27,8 @@ const covid19ImpactEstimator = (data) => {
   const availableBeds = Math.round(0.35 * data.totalHospitalBeds);
   const impactHBByRT = availableBeds - (Math.round(0.15 * impactInfByRT));
   const sImpactHBByRT = availableBeds - (Math.round(0.15 * sImpactInfByRT));
-  const impactCForICUByRT = Math.ceil(0.05 * impactInfByRT);
-  const sImpactCForICUByRT = Math.ceil(0.05 * sImpactInfByRT);
+  const impactCForICUByRT = Math.round(0.05 * impactInfByRT);
+  const sImpactCForICUByRT = Math.round(0.05 * sImpactInfByRT);
   const myltp = impactInfByRT * data.region.avgDailyIncomePopulation;
   const impactDInF = Math.floor(myltp * data.timeToElapse);
   const multp2 = sImpactInfByRT * data.region.avgDailyIncomePopulation;
