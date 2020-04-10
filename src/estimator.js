@@ -6,9 +6,9 @@ const infByReqTime = (elapsedTime, cInf) => {
   return Math.round(part1CurrentlyInfected + part2CurrentlyInfected);
 };
 const inDays = (periodType, timeToElapse) => {
-  let result;
+  let result = timeToElapse;
   if (periodType === 'days') {
-    result = timeToElapse;
+    result = timeToElapse * 1;
   }
   if (periodType === 'weeks') {
     result = timeToElapse * 7;
