@@ -9,7 +9,7 @@ const inDays = (periodType, timeToElapse) => {
   let result = timeToElapse;
   const options = ['days', 'weeks', 'months'];
   if (options.indexOf(periodType) === 1) {
-      result = timeToElapse * 7;
+    result = timeToElapse * 7;
   }
   let then;
   if (options.indexOf(periodType) === 2) {
@@ -29,10 +29,10 @@ const inDays = (periodType, timeToElapse) => {
       const fYr = nowYr + addedYrs;
       const fMonths = workingMonth % 12;
       if (fYr % 4 !== 0 && fMonths === 2 && nowDate > 28) {
-          nowDate = 28;
+        nowDate = 28;
       }
       if (months30s.indexOf(fMonths) > -1 && nowDate === 31) {
-          nowDate = 30;
+        nowDate = 30;
       }
       then = new Date(fYr, fMonths, nowDate, nowHr, nowMins, nowSecs, nowMilSecs);
     } else {
@@ -42,10 +42,9 @@ const inDays = (periodType, timeToElapse) => {
     }
     const timeDifferenceInMilliseconds = then.getTime() - now.getTime();
     result = Math.ceil(timeDifferenceInMilliseconds / 86400000);
-  };
+  }
   return result;
 };
-
 const covid19ImpactEstimator = (data) => {
   const impactRC = data.reportedCases * 10;
   const sImpactRC = data.reportedCases * 50;
@@ -55,14 +54,14 @@ const covid19ImpactEstimator = (data) => {
   const impactSCByRT = Math.round(0.15 * impactInfByRT);
   const sImpactSCByRT = Math.round(0.15 * sImpactInfByRT);
   const availableBeds = Math.round(0.35 * data.totalHospitalBeds);
-  const impactHBByRT =  availableBeds - (Math.round(0.15 * impactInfByRT));
+  const impactHBByRT = availableBeds - (Math.round(0.15 * impactInfByRT));
   const sImpactHBByRT = availableBeds - (Math.round(0.15 * sImpactInfByRT));
   const impactCForICUByRT = Math.round(0.05 * impactInfByRT);
   const sImpactCForICUByRT = Math.round(0.05 * sImpactInfByRT);
   const myltp = impactInfByRT * data.region.avgDailyIncomePopulation;
   const impactDInF = Math.floor(myltp * data.timeToElapse);
   const multp2 = sImpactInfByRT * data.region.avgDailyIncomePopulation;
-  const severImpactDollarsInFlight = Math.floor(multp2 * data.timeToElapse);
+  const sImpactDInF = Math.floor(multp2 * data.timeToElapse);
   const impactVent = Math.round(0.02 * impactInfByRT);
   const sImpactVent = Math.round(0.02 * sImpactInfByRT);
   return {
@@ -85,6 +84,6 @@ const covid19ImpactEstimator = (data) => {
       casesForVentilatorsByRequestedTime: sImpactVent,
       dollarsInFlight: sImpactDInF
     }
-  }
+  };
 };
 export default covid19ImpactEstimator;
