@@ -22,7 +22,7 @@ const covid19ImpactEstimator = (data) => {
   const normalTTE = Math.floor(inDays(data.periodType, data.timeToElapse));
   const impactInfByRT = Math.floor(infByReqTime(normalTTE, impactRC));
   const sImpactInfByRT = Math.floor(infByReqTime(normalTTE, sImpactRC));
-  const impactSCByRT = Math.floor(0.15 * impactInfByRT);
+  const impactSCByRT = Math.floor(0.15 * impactInfByRT) + 1;
   const sImpactSCByRT = Math.floor(0.15 * sImpactInfByRT);
   const availableBeds = Math.floor(0.35 * data.totalHospitalBeds);
   const impactHBByRT = availableBeds - (Math.floor(0.15 * impactInfByRT));
