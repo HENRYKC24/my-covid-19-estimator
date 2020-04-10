@@ -1,15 +1,13 @@
 const infByReqTime = (elapsedTime, cInf) => {
-  const numOfThreesInElapsedTime = Math.floor(elapsedTime / 3);
+  const exponent = Math.floor(elapsedTime / 3);
   const extraDays = elapsedTime % 3;
-  const part1CurrentlyInfected = cInf * (2 ** numOfThreesInElapsedTime);
-  const part2CurrentlyInfected = (part1CurrentlyInfected / 72) * extraDays;
+  const part1CurrentlyInfected = cInf * (2 ** exponent);
+  const part2CurrentlyInfected = ((part1CurrentlyInfected  * 2) / 3) * extraDays;
   return Math.floor(part1CurrentlyInfected + part2CurrentlyInfected);
 };
 const inDays = (periodType, timeToElapse) => {
   let result = timeToElapse;
-  if (periodType === 'days') {
-    result = timeToElapse * 1;
-  } else if (periodType === 'weeks') {
+  if (periodType === 'weeks') {
     result = timeToElapse * 7;
   } else if (periodType === 'months') {
     result = timeToElapse * 30;
