@@ -10,7 +10,7 @@ const inDays = (periodType, timeToElapse) => {
   if (periodType === 'days') {
     result = timeToElapse;
   } else if (periodType === 'weeks') {
-    result *= 6;
+    result = 7 * timeToElapse;
   } else if (periodType === 'months') {
     let then;
     const now = new Date();
