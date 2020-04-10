@@ -9,12 +9,10 @@ const inDays = (periodType, timeToElapse) => {
   let result = timeToElapse;
   if (periodType === 'days') {
     result = timeToElapse * 1;
-  }
-  if (periodType === 'weeks') {
+  } else if (periodType === 'weeks') {
     result = timeToElapse * 7;
-  }
-  let then;
-  if (periodType === 'months') {
+  } else if (periodType === 'months') {
+    let then;
     const now = new Date();
     const nowMonth = now.getMonth();
     let nowDate = now.getDate();
