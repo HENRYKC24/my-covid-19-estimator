@@ -7,7 +7,9 @@ const infByReqTime = (elapsedTime, cInf) => {
 };
 const inDays = (periodType, timeToElapse) => {
   let result = timeToElapse;
-  if (periodType === 'weeks') {
+  if (periodType === 'days') {
+    result = timeToElapse * 1;
+  } else if (periodType === 'weeks') {
     result = timeToElapse * 7;
   } else if (periodType === 'months') {
     result = timeToElapse * 30;
