@@ -3,7 +3,7 @@ const infByReqTime = (elapsedTime, cInf) => {
   return cInf * (2 ** exponent);
 };
 const inDays = (periodType, timeToElapse) => {
-  let result = timeToElapse;
+  let result;
   if (periodType === 'days') {
     result = timeToElapse;
   } else if (periodType === 'weeks') {
@@ -29,9 +29,9 @@ const covid19ImpactEstimator = (data) => {
   const impactVent = Math.trunc((0.02 * impactInfByRT / 10));
   const sImpactVent = Math.trunc((0.02 * sImpactInfByRT / 50));
   const myltp = impactInfByRT * data.region.avgDailyIncomePopulation;
-  const impactDInF = Math.trunc(myltp * normalTTE * data.region.avgDailyIncomeInUSD);
+  const impactDInF = Math.trunc(myltp * data.region.avgDailyIncomeInUSD) / normalTTE;
   const multp2 = sImpactInfByRT * data.region.avgDailyIncomePopulation;
-  const sImpactDInF = Math.trunc(multp2 * normalTTE * data.region.avgDailyIncomeInUSD);
+  const sImpactDInF = Math.trunc(multp2 * data.region.avgDailyIncomeInUSD) / normalTTE;
   return {
     data,
     impact: {
