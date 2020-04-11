@@ -30,8 +30,8 @@ const covid19ImpactEstimator = (data) => {
   const impactDInF = parseInt(myltp * normalTTE * data.region.avgDailyIncomeInUSD, 10);
   const multp2 = sImpactInfByRT * data.region.avgDailyIncomePopulation;
   const sImpactDInF = parseInt(multp2 * normalTTE * data.region.avgDailyIncomeInUSD, 10);
-  const impactVent = parseInt(0.02 * impactInfByRT, 10);
-  const sImpactVent = parseInt(0.02 * sImpactInfByRT, 10);
+  const impactVent = parseInt(0.02 * impactSCByRT, 10);
+  const sImpactVent = parseInt(0.02 * sImpactSCByRT, 10);
   return {
     data,
     impact: {
