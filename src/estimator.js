@@ -36,9 +36,9 @@ const covid19ImpactEstimator = (data) => {
   const impactVent = takeWholeNum((0.02 * impactInfByRT));
   const sImpactVent = takeWholeNum((0.02 * sImpactInfByRT));
   const myltp = impactInfByRT * data.region.avgDailyIncomePopulation;
-  const impactDInF = takeWholeNum(myltp * data.region.avgDailyIncomeInUSD) / normalTTE;
+  const impactDInF = takeWholeNum((myltp * data.region.avgDailyIncomeInUSD) / normalTTE);
   const multp2 = sImpactInfByRT * data.region.avgDailyIncomePopulation;
-  const sImpactDInF = takeWholeNum(multp2 * data.region.avgDailyIncomeInUSD) / normalTTE;
+  const sImpactDInF = takeWholeNum((multp2 * data.region.avgDailyIncomeInUSD) / normalTTE);
   return {
     data,
     impact: {
