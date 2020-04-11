@@ -1,3 +1,12 @@
+const takeWholeNum = (x) => {
+  const textVersion = String(x);
+  if (textVersion.indexOf('.') < 0) {
+    return Number(textVersion);
+  } else {
+    const index = textVersion.indexOf('.');
+    return Number(textVersion.slice(0, index));
+  }
+};
 const infByReqTime = (elapsedTime, cInf) => {
   const exponent = takeWholeNum(elapsedTime / 3);
   return cInf * (2 ** exponent);
@@ -12,18 +21,6 @@ const inDays = (periodType, timeToElapse) => {
     result = timeToElapse * 30;
   }
   return result;
-};
-const takeWholeNum = (x) => {
-  let textVersion = String(x);
-  let tempResult = '';
-  for (let a of textVersion) {
-    if (a !== '.') {
-      tempResult += a;
-    } else {
-      break;
-    }
-  }
-  return Number(tempResult);
 };
 const covid19ImpactEstimator = (data) => {
   const impactRC = data.reportedCases * 10;
