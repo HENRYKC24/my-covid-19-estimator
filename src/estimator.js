@@ -29,9 +29,9 @@ const covid19ImpactEstimator = (data) => {
   const impactVent = Math.trunc((0.02 * impactInfByRT / 10));
   const sImpactVent = Math.trunc((0.02 * sImpactInfByRT / 50));
   const myltp = impactInfByRT * data.region.avgDailyIncomePopulation;
-  const impactDInF = Math.trunc(myltp * data.region.avgDailyIncomeInUSD) / normalTTE;
+  const impactDInF = Math.trunc(myltp * data.region.avgDailyIncomeInUSD)/normalTTE;
   const multp2 = sImpactInfByRT * data.region.avgDailyIncomePopulation;
-  const sImpactDInF = Math.trunc(multp2 * data.region.avgDailyIncomeInUSD) / normalTTE;
+  const sImpactDInF = Math.trunc(multp2 * data.region.avgDailyIncomeInUSD)/normalTTE;
   return {
     data,
     impact: {
