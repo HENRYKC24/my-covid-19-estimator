@@ -1,5 +1,5 @@
 const infByReqTime = (elapsedTime, cInf) => {
-  const exponent = parseInt(elapsedTime / 3);
+  const exponent = Number.parseInt(elapsedTime / 3);
   return cInf * (2 ** exponent);
 };
 const inDays = (periodType, timeToElapse) => {
@@ -16,22 +16,22 @@ const inDays = (periodType, timeToElapse) => {
 const covid19ImpactEstimator = (data) => {
   const impactRC = data.reportedCases * 10;
   const sImpactRC = data.reportedCases * 50;
-  const normalTTE = parseInt(inDays(data.periodType, data.timeToElapse));
-  const impactInfByRT = parseInt(infByReqTime(normalTTE, impactRC));
-  const sImpactInfByRT = parseInt(infByReqTime(normalTTE, sImpactRC));
-  const impactSCByRT = parseInt(0.15 * impactInfByRT);
-  const sImpactSCByRT = parseInt(0.15 * sImpactInfByRT);
+  const normalTTE = Number.parseInt(inDays(data.periodType, data.timeToElapse));
+  const impactInfByRT = Number.parseInt(infByReqTime(normalTTE, impactRC));
+  const sImpactInfByRT = Number.parseInt(infByReqTime(normalTTE, sImpactRC));
+  const impactSCByRT = Number.parseInt(0.15 * impactInfByRT);
+  const sImpactSCByRT = Number.parseInt(0.15 * sImpactInfByRT);
   const availableBeds = 0.35 * data.totalHospitalBeds;
-  const impactHBByRT = parseInt(availableBeds - (0.15 * impactInfByRT));
-  const sImpactHBByRT = parseInt(availableBeds - (0.15 * sImpactInfByRT));
-  const impactCForICUByRT = parseInt(0.05 * impactInfByRT);
-  const sImpactCForICUByRT = parseInt(0.05 * sImpactInfByRT);
+  const impactHBByRT = Number.parseInt(availableBeds - (0.15 * impactInfByRT));
+  const sImpactHBByRT = Number.parseInt(availableBeds - (0.15 * sImpactInfByRT));
+  const impactCForICUByRT = Number.parseInt(0.05 * impactInfByRT);
+  const sImpactCForICUByRT = Number.parseInt(0.05 * sImpactInfByRT);
   const myltp = impactInfByRT * data.region.avgDailyIncomePopulation;
-  const impactDInF = parseInt(myltp * normalTTE * data.region.avgDailyIncomeInUSD);
+  const impactDInF = Number.parseInt(myltp * normalTTE * data.region.avgDailyIncomeInUSD);
   const multp2 = sImpactInfByRT * data.region.avgDailyIncomePopulation;
-  const sImpactDInF = parseInt(multp2 * normalTTE * data.region.avgDailyIncomeInUSD);
-  const impactVent = parseInt(0.02 * impactInfByRT);
-  const sImpactVent = parseInt(0.02 * sImpactInfByRT);
+  const sImpactDInF = Number.parseInt(multp2 * normalTTE * data.region.avgDailyIncomeInUSD);
+  const impactVent = Number.parseInt(0.02 * impactInfByRT);
+  const sImpactVent = Number.parseInt(0.02 * sImpactInfByRT);
   return {
     data,
     impact: {
