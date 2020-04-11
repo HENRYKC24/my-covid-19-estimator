@@ -2,7 +2,7 @@ const takeWholeNum = (x) => {
   const t = String(x);
   if (t.indexOf('.') < 0) {
     return Number(t);
-  };
+  }
   return Number(t.slice(0, t.indexOf('.')));
 };
 const infByReqTime = (elapsedTime, cInf) => {
