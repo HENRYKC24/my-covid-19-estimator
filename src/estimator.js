@@ -28,7 +28,7 @@ const covid19ImpactEstimator = (data) => {
   const sImpactInfByRT = takeWholeNum(infByReqTime(normalTTE, sImpactRC));
   const impactSCByRT = takeWholeNum(0.15 * impactInfByRT);
   const sImpactSCByRT = takeWholeNum(0.15 * sImpactInfByRT);
-  const availableBeds = 0.35 * data.totalHospitalBeds;
+  const availableBeds = takeWholeNum(0.35 * data.totalHospitalBeds);
   const impactHBByRT = takeWholeNum(availableBeds - (0.15 * impactInfByRT));
   const sImpactHBByRT = takeWholeNum(availableBeds - (0.15 * sImpactInfByRT));
   const impactCForICUByRT = takeWholeNum(0.05 * impactInfByRT);
