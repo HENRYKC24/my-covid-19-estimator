@@ -1,5 +1,5 @@
 const infByReqTime = (elapsedTime, cInf) => {
-  const exponent = Math.trunc(elapsedTime / 3);
+  const exponent = takeWholeNum(elapsedTime / 3);
   return cInf * (2 ** exponent);
 };
 const inDays = (periodType, timeToElapse) => {
@@ -13,25 +13,37 @@ const inDays = (periodType, timeToElapse) => {
   }
   return result;
 };
+const takeWholeNum = (x) => {
+  let textVersion = String(x);
+  let tempResult = '';
+  for (let a of textVersion) {
+    if (a !== '.') {
+      tempResult += a;
+    } else {
+      break;
+    }
+  }
+  return Number(tempResult);
+};
 const covid19ImpactEstimator = (data) => {
   const impactRC = data.reportedCases * 10;
   const sImpactRC = data.reportedCases * 50;
-  const normalTTE = Math.trunc(inDays(data.periodType, data.timeToElapse));
-  const impactInfByRT = Math.trunc(infByReqTime(normalTTE, impactRC));
-  const sImpactInfByRT = Math.trunc(infByReqTime(normalTTE, sImpactRC));
-  const impactSCByRT = Math.trunc(0.15 * impactInfByRT);
-  const sImpactSCByRT = Math.trunc(0.15 * sImpactInfByRT);
+  const normalTTE = takeWholeNum(inDays(data.periodType, data.timeToElapse));
+  const impactInfByRT = takeWholeNum(infByReqTime(normalTTE, impactRC));
+  const sImpactInfByRT = takeWholeNum(infByReqTime(normalTTE, sImpactRC));
+  const impactSCByRT = takeWholeNum(0.15 * impactInfByRT);
+  const sImpactSCByRT = takeWholeNum(0.15 * sImpactInfByRT);
   const availableBeds = 0.35 * data.totalHospitalBeds;
-  const impactHBByRT = Math.trunc(availableBeds - (0.15 * impactInfByRT));
-  const sImpactHBByRT = Math.trunc(availableBeds - (0.15 * sImpactInfByRT));
-  const impactCForICUByRT = Math.trunc(0.05 * impactInfByRT);
-  const sImpactCForICUByRT = Math.trunc(0.05 * sImpactInfByRT);
-  const impactVent = Math.floor((0.02 * impactInfByRT));
-  const sImpactVent = Math.floor((0.02 * sImpactInfByRT));
+  const impactHBByRT = takeWholeNum(availableBeds - (0.15 * impactInfByRT));
+  const sImpactHBByRT = takeWholeNum(availableBeds - (0.15 * sImpactInfByRT));
+  const impactCForICUByRT = takeWholeNum(0.05 * impactInfByRT);
+  const sImpactCForICUByRT = takeWholeNum(0.05 * sImpactInfByRT);
+  const impactVent = takeWholeNum((0.02 * impactInfByRT));
+  const sImpactVent = takeWholeNum((0.02 * sImpactInfByRT));
   const myltp = impactInfByRT * data.region.avgDailyIncomePopulation;
-  const impactDInF = Math.trunc(myltp * data.region.avgDailyIncomeInUSD) / normalTTE;
+  const impactDInF = takeWholeNum(myltp * data.region.avgDailyIncomeInUSD) / normalTTE;
   const multp2 = sImpactInfByRT * data.region.avgDailyIncomePopulation;
-  const sImpactDInF = Math.trunc(multp2 * data.region.avgDailyIncomeInUSD) / normalTTE;
+  const sImpactDInF = takeWholeNum(multp2 * data.region.avgDailyIncomeInUSD) / normalTTE;
   return {
     data,
     impact: {
